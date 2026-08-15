@@ -1,0 +1,1905 @@
+AyuLink — Master Build Specification
+
+0. YOUR ROLE
+
+You are a senior full-stack engineer, product architect, UI/UX designer, QA engineer, and technical lead.
+
+You are building a working hackathon/demo prototype, NOT a production healthcare platform.
+
+The prototype must be:
+
+* Functional end-to-end
+* Visually polished
+* Easy to demonstrate
+* Safe in its medical claims
+* Modular enough for future development
+* Simple enough to complete TODAY
+
+Do not over-engineer.
+
+Do not build features that are not required for the demo.
+
+Do not stop after creating UI mockups.
+
+Every major feature must work against a real local/cloud database or deterministic mock service.
+
+⸻
+
+1. PRODUCT
+
+Product name
+
+Ayulink
+
+Tagline
+
+Connecting doctors, pharmacies and patients through one structured prescription network.
+
+One-line description
+
+AyuLink transforms a prescription from an isolated paper document into a structured digital transaction connecting doctors, patients and pharmacies.
+
+⸻
+
+2. CORE PROBLEM
+
+The healthcare prescription workflow is fragmented.
+
+Today:
+
+Doctor
+↓
+Handwritten prescription / image
+↓
+Patient
+↓
+Pharmacy
+↓
+Pharmacist decodes prescription
+↓
+Medicine may be unavailable
+↓
+Patient leaves or searches elsewhere
+↓
+Doctor may never know
+
+AyuLink digitizes this handoff.
+
+Doctor creates a structured prescription.
+
+↓
+
+Patient’s chosen pharmacy receives it.
+
+↓
+
+Pharmacy checks availability.
+
+↓
+
+If unavailable, pharmacy notifies the doctor.
+
+↓
+
+Doctor makes the clinical decision.
+
+↓
+
+Updated prescription reaches pharmacy.
+
+↓
+
+Patient can also search participating pharmacies for medicine availability.
+
+⸻
+
+3. IMPORTANT PRODUCT PRINCIPLE
+
+Ayulink is NOT an autonomous medical decision system.
+
+The system must NEVER:
+
+* Diagnose a patient
+* Automatically prescribe medicine
+* Automatically replace a medicine
+* Tell a patient which prescription medicine they should take
+* Present AI-generated medical advice as fact
+* Allow a pharmacy to independently substitute a prescribed medicine
+
+Use this principle everywhere:
+
+AI assists. Clinicians decide.
+
+Any AI-generated clinical information must clearly say:
+
+“Assistive information only. Physician confirmation required.”
+
+⸻
+
+4. PRIMARY USERS
+
+Build three role-based experiences.
+
+A. Doctor
+
+Capabilities:
+
+* Dashboard
+* Patient list
+* Patient history
+* Create structured prescription
+* Search medicine
+* Add dosage/frequency/duration
+* Use prescription templates
+* Send prescription to pharmacy
+* Receive pharmacy availability alerts
+* Review/approve clinician-selected resolution
+* View medication safety alerts
+* Generate patient history summary
+
+⸻
+
+B. Pharmacy
+
+Capabilities:
+
+* Dashboard
+* Prescription inbox
+* View incoming prescriptions
+* Check inventory
+* Mark medicine available/unavailable
+* Notify doctor if unavailable
+* View updated prescription
+* Inventory management
+* Inventory synchronization simulation
+* Medicine search
+* Demand intelligence dashboard
+
+⸻
+
+C. Patient
+
+Capabilities:
+
+* Dashboard
+* View active prescriptions
+* Search medicine availability
+* See participating nearby pharmacies
+* See availability status
+* See last-updated time
+* Never see exact inventory quantity
+* View prescription history
+
+Patient MUST NOT receive autonomous medicine recommendations.
+
+⸻
+
+5. CORE DEMO STORY
+
+The entire application must support this exact demonstration.
+
+Scenario
+
+Doctor Dr. Arun creates a prescription for fictional patient Rahul.
+
+Prescription:
+
+* Amoxicillin 500 mg
+* 1 capsule
+* Twice daily
+* 5 days
+
+Doctor selects:
+
+CarePlus Pharmacy
+
+and clicks:
+
+Send Prescription
+
+⸻
+
+Pharmacy
+
+CarePlus Pharmacy receives:
+
+NEW PRESCRIPTION
+
+Rahul
+
+Amoxicillin 500 mg
+1 capsule
+2× daily
+5 days
+
+The pharmacy checks inventory.
+
+The demo inventory says:
+
+Unavailable
+
+Pharmacy clicks:
+
+Notify Doctor
+
+⸻
+
+Doctor
+
+Doctor receives:
+
+Pharmacy cannot currently fulfill Amoxicillin 500 mg.
+
+Doctor can review the situation.
+
+The doctor, NOT the AI and NOT the pharmacy, decides what to do.
+
+For the prototype, use a predefined clinician-controlled resolution rather than an autonomous substitution engine.
+
+Doctor confirms.
+
+⸻
+
+Pharmacy
+
+Pharmacy receives:
+
+Updated prescription / doctor response received.
+
+This should happen through database state updates and preferably realtime notification.
+
+⸻
+
+6. SECOND DEMO STORY — MEDICINE AVAILABILITY
+
+Patient logs in.
+
+Searches:
+
+Paracetamol 500 mg
+
+AyuLink displays:
+
+Nearby participating pharmacies
+
+CarePlus Pharmacy
+
+* Available
+* Updated 12 minutes ago
+
+GreenCare Pharmacy
+
+* Available
+* Updated 27 minutes ago
+
+Medico Pharmacy
+
+* Availability uncertain
+* Updated 5 hours ago
+
+DO NOT show:
+
+* Exact quantity
+* Stock count
+* Purchase price
+* Supplier
+* Profit margin
+* Other sensitive pharmacy information
+
+Only:
+
+* Available
+* Unavailable
+* Availability uncertain
+* Last updated
+
+⸻
+
+7. THIRD DEMO STORY — DEMAND INTELLIGENCE
+
+Do NOT call this:
+
+“Trending medicines”
+
+Do not encourage medicine consumption based on popularity.
+
+Call it:
+
+Demand Intelligence
+
+The pharmacy sees aggregated signals such as:
+
+Medicine: ORS
+
+* Local searches: 142
+* Prescription requests: 67
+* Participating pharmacies: 18
+* Availability: 46%
+* Demand trend: High
+
+Then:
+
+Potential supply gap detected.
+
+Review inventory levels.
+
+The system must NOT say:
+
+“You should stock this medicine.”
+
+The pharmacy makes the inventory decision.
+
+⸻
+
+8. AI FEATURES
+
+Implement only three assistive intelligence features.
+
+AI Feature 1 — Patient History Summary
+
+Because prescriptions are structured, generate a summary from stored prescription history.
+
+Example:
+
+Patient Rahul
+
+Previous prescriptions:
+
+* 2026-07-12
+* 2026-07-28
+* 2026-08-15
+
+Button:
+
+Generate History Summary
+
+Output should be concise.
+
+Example:
+
+Patient has 3 recorded prescriptions in the available history. The latest prescription contains…
+
+Clearly label:
+
+AI-generated summary based on recorded AyuLink data.
+
+Do not invent medical history.
+
+If no data exists, say so.
+
+⸻
+
+9. AI FEATURE 2 — MEDICATION SAFETY
+
+Implement a conservative medication safety layer.
+
+Preferred data sources:
+
+* RxNorm for standardized medication concepts
+* openFDA drug-label information where appropriate
+* deterministic demo rules for known test scenarios
+
+Do NOT let an LLM freely invent drug interactions.
+
+If a warning is shown:
+
+Potential interaction detected.
+
+Then:
+
+Review the referenced medication information before making a clinical decision.
+
+And:
+
+Physician confirmation required.
+
+The system must not automatically block or modify prescriptions.
+
+⸻
+
+10. AI FEATURE 3 — DEMAND INTELLIGENCE
+
+For today’s prototype, do NOT train a machine-learning model.
+
+Use a deterministic weighted scoring system.
+
+Possible inputs:
+
+* Anonymous medicine searches
+* Prescription requests
+* Historical demand
+* Local availability
+* Recent trend
+
+Example conceptual score:
+
+Demand Score =
+search signal
+
+* prescription signal
+* historical signal
+* availability-gap signal
+
+Normalize to:
+
+* Low
+* Medium
+* High
+
+Clearly label this as:
+
+Demand Intelligence / prototype signal
+
+Do not claim it is a clinically validated forecasting model.
+
+⸻
+
+11. TECHNOLOGY STACK
+
+Use:
+
+Frontend
+
+* React
+* Vite
+* TypeScript
+* Tailwind CSS
+* Lucide React icons
+* Recharts
+
+Backend
+
+* Python
+* FastAPI
+* Pydantic
+* Uvicorn
+
+Database
+
+Preferred:
+
+* Supabase PostgreSQL
+
+Use Supabase Auth if practical.
+
+Use Row Level Security where appropriate.
+
+Use Supabase Realtime or a simple polling fallback for notifications.
+
+Supabase supports Postgres-backed Auth, RLS-based access control, and realtime database changes.
+
+External medication information
+
+Prefer:
+
+* RxNorm API
+* openFDA where useful
+
+Do not make external APIs a hard dependency for the entire demo.
+
+The application must still work if an external medication API is unavailable.
+
+Use a local seeded medication dataset as fallback.
+
+⸻
+
+12. PROJECT STRUCTURE
+
+Use a clean structure similar to:
+
+ayulink/
+
+frontend/
+src/
+components/
+pages/
+layouts/
+hooks/
+services/
+types/
+utils/
+data/
+
+backend/
+app/
+main.py
+api/
+models/
+schemas/
+services/
+repositories/
+utils/
+ai/
+config.py
+
+database/
+migrations/
+seed/
+
+docs/
+architecture.md
+api.md
+demo-script.md
+
+README.md
+
+.env.example
+
+docker-compose.yml
+
+⸻
+
+13. DATABASE
+
+Create the following tables.
+
+users
+
+Fields:
+
+* id
+* name
+* email
+* role
+* created_at
+
+Roles:
+
+* doctor
+* pharmacy
+* patient
+
+⸻
+
+doctors
+
+Fields:
+
+* id
+* user_id
+* specialization
+* license_number
+* created_at
+
+For demo purposes, license numbers are fictional.
+
+⸻
+
+patients
+
+Fields:
+
+* id
+* user_id
+* name
+* date_of_birth
+* created_at
+
+⸻
+
+pharmacies
+
+Fields:
+
+* id
+* user_id
+* name
+* address
+* latitude
+* longitude
+* created_at
+
+⸻
+
+medicines
+
+Fields:
+
+* id
+* name
+* generic_name
+* strength
+* dosage_form
+* rxcui
+* prescription_required
+* created_at
+
+⸻
+
+inventory
+
+Fields:
+
+* id
+* pharmacy_id
+* medicine_id
+* availability_status
+* internal_stock_quantity
+* last_updated
+
+availability_status:
+
+* available
+* unavailable
+* uncertain
+
+IMPORTANT:
+
+internal_stock_quantity must NEVER be returned through patient-facing APIs.
+
+⸻
+
+prescriptions
+
+Fields:
+
+* id
+* doctor_id
+* patient_id
+* pharmacy_id
+* status
+* notes
+* created_at
+* updated_at
+
+Statuses:
+
+* draft
+* sent
+* received
+* unavailable
+* doctor_review
+* resolved
+* completed
+* cancelled
+
+⸻
+
+prescription_items
+
+Fields:
+
+* id
+* prescription_id
+* medicine_id
+* dose
+* frequency
+* duration
+* instructions
+
+⸻
+
+notifications
+
+Fields:
+
+* id
+* recipient_user_id
+* prescription_id
+* type
+* title
+* message
+* is_read
+* created_at
+
+Types:
+
+* prescription_received
+* medicine_unavailable
+* doctor_response
+* safety_alert
+* system
+
+⸻
+
+medicine_searches
+
+Fields:
+
+* id
+* medicine_id
+* coarse_location
+* created_at
+
+Do NOT store unnecessary personal identifiers.
+
+For demand analytics, use aggregated/anonymized information.
+
+⸻
+
+demand_metrics
+
+Fields:
+
+* id
+* medicine_id
+* area
+* search_count
+* prescription_count
+* availability_percentage
+* demand_score
+* demand_level
+* calculated_at
+
+⸻
+
+prescription_templates
+
+Fields:
+
+* id
+* doctor_id
+* name
+* specialization
+* created_at
+
+⸻
+
+14. DEMO DATA
+
+Seed the application with fictional data.
+
+Doctors
+
+Dr. Arun Menon
+Specialization:
+General Medicine
+
+Dr. Priya Nair
+Specialization:
+Internal Medicine
+
+⸻
+
+Patients
+
+Rahul Krishnan
+
+Anjali Thomas
+
+⸻
+
+Pharmacies
+
+CarePlus Pharmacy
+
+GreenCare Pharmacy
+
+Medico Pharmacy
+
+CityMed Pharmacy
+
+Use fictional locations around Thrissur/Kerala for demo purposes.
+
+Clearly indicate that these are demo pharmacies.
+
+Do NOT imply that real pharmacies participate.
+
+⸻
+
+15. MEDICINE DATA
+
+Seed at least 30 medicines.
+
+Include examples such as:
+
+* Paracetamol 500 mg
+* Amoxicillin 500 mg
+* Azithromycin 500 mg
+* Metformin 500 mg
+* Amlodipine 5 mg
+* Cetirizine 10 mg
+* Pantoprazole 40 mg
+* ORS
+* Ibuprofen 400 mg
+* Omeprazole 20 mg
+
+Use generic names and strengths.
+
+Where possible, map medication concepts to RxNorm identifiers.
+
+Do not fabricate RxNorm IDs.
+
+If no verified identifier is available, leave it null.
+
+⸻
+
+16. INVENTORY DEMO DATA
+
+Configure inventory deliberately so the demo works.
+
+Example:
+
+CarePlus:
+
+* Paracetamol 500: available
+* Amoxicillin 500: unavailable
+* ORS: available
+* Metformin 500: available
+
+GreenCare:
+
+* Paracetamol 500: available
+* Amoxicillin 500: available
+* ORS: unavailable
+
+Medico:
+
+* Paracetamol 500: uncertain
+* Amoxicillin 500: available
+
+⸻
+
+17. AUTHENTICATION
+
+Implement role-based login.
+
+For fastest demo:
+
+Provide demo accounts.
+
+Doctor:
+doctor@ayulink.demo
+
+Pharmacy:
+pharmacy@ayulink.demo
+
+Patient:
+patient@ayulink.demo
+
+If actual password authentication is implemented, document demo credentials clearly.
+
+Do NOT hardcode secrets into source code.
+
+Use environment variables.
+
+⸻
+
+18. DOCTOR UI
+
+Create:
+
+Doctor Dashboard
+
+Show:
+
+* Today’s prescriptions
+* Pending pharmacy responses
+* Safety alerts
+* Follow-ups
+* Recent patients
+
+Cards:
+
+Patients
+Prescriptions
+Alerts
+Pending Responses
+
+⸻
+
+Patient History
+
+Show a timeline.
+
+Example:
+
+2026-07-12
+Prescription created
+
+2026-07-28
+Prescription created
+
+2026-08-15
+Current prescription
+
+Button:
+
+Generate AI Summary
+
+⸻
+
+Create Prescription
+
+Fields:
+
+Patient
+Medicine
+Strength
+Dose
+Frequency
+Duration
+Instructions
+
+Allow:
+
+Add Medicine
+
+Allow multiple medicines.
+
+Show structured prescription preview.
+
+Button:
+
+Send to Pharmacy
+
+⸻
+
+19. PHARMACY UI
+
+Dashboard
+
+Cards:
+
+* Incoming prescriptions
+* Pending responses
+* Low availability
+* Demand alerts
+
+⸻
+
+Prescription Inbox
+
+Each prescription:
+
+Patient
+Doctor
+Date
+Status
+
+Click:
+
+View Prescription
+
+⸻
+
+Prescription Detail
+
+Show medicine details.
+
+For each medicine:
+
+Availability status.
+
+Buttons:
+
+Accept
+
+Mark Unavailable
+
+If unavailable:
+
+Show:
+
+Notify Doctor
+
+⸻
+
+Inventory
+
+Search medicines.
+
+Show:
+
+Medicine
+Availability
+Last updated
+
+Button:
+
+Update Availability
+
+Do not expose exact quantity.
+
+⸻
+
+Inventory Sync
+
+Create a realistic demo interface:
+
+Last synchronization:
+10:42 AM
+
+Medicines processed:
+127
+
+Updated:
+121
+
+Unavailable:
+6
+
+Button:
+
+Sync Inventory
+
+This may operate against seeded/mock data.
+
+Document clearly that real POS integration is future work.
+
+⸻
+
+20. PATIENT UI
+
+Patient Dashboard
+
+Show:
+
+* Active prescriptions
+* Recent prescriptions
+* Medicine search
+
+⸻
+
+Medicine Search
+
+Search by:
+
+* medicine name
+* generic name
+* strength
+
+Show:
+
+Participating pharmacies.
+
+Each result:
+
+Pharmacy name
+Approximate area
+Availability
+Last updated
+
+Example:
+
+CarePlus Pharmacy
+Available
+Updated 12 min ago
+
+Never display quantity.
+
+⸻
+
+21. DEMAND INTELLIGENCE UI
+
+Create charts using Recharts.
+
+Show:
+
+Demand Overview
+
+* High demand medicines
+* Medium demand medicines
+* Supply gaps
+
+Charts:
+
+* Search trend
+* Prescription demand
+* Availability percentage
+
+Example:
+
+ORS
+
+Demand:
+HIGH
+
+Searches:
+142
+
+Prescription requests:
+67
+
+Availability:
+46%
+
+Signal:
+
+Potential supply gap.
+
+Recommendation:
+
+Review inventory levels.
+
+⸻
+
+22. REALTIME BEHAVIOR
+
+Important demo requirement.
+
+When pharmacy clicks:
+
+Notify Doctor
+
+the doctor dashboard should update.
+
+Preferred implementation:
+
+Supabase Realtime.
+
+Fallback:
+
+Poll notifications every few seconds.
+
+The system must work even if realtime configuration fails.
+
+Do not make the entire application unusable because realtime is unavailable.
+
+⸻
+
+23. API DESIGN
+
+Create REST APIs approximately like:
+
+POST /auth/login
+
+GET /doctors/dashboard
+
+GET /patients
+
+GET /patients/{id}
+
+POST /prescriptions
+
+GET /prescriptions
+
+GET /prescriptions/{id}
+
+PATCH /prescriptions/{id}
+
+POST /prescriptions/{id}/send
+
+POST /prescriptions/{id}/unavailable
+
+POST /prescriptions/{id}/doctor-response
+
+GET /pharmacies
+
+GET /pharmacies/{id}/inventory
+
+GET /medicines/search
+
+GET /medicines/{id}/availability
+
+PATCH /inventory/{id}
+
+POST /inventory/sync
+
+GET /notifications
+
+PATCH /notifications/{id}/read
+
+GET /demand
+
+GET /demand/{medicine_id}
+
+POST /ai/history-summary
+
+POST /ai/safety-check
+
+⸻
+
+24. API SECURITY
+
+Never trust frontend role checks alone.
+
+Backend must verify:
+
+* authenticated user
+* role
+* resource ownership
+* pharmacy ownership
+* doctor ownership
+
+A patient must not be able to access another patient’s prescription.
+
+A pharmacy must not access another pharmacy’s private inventory.
+
+A doctor must not modify another doctor’s prescription.
+
+⸻
+
+25. MEDICAL DATA SAFETY
+
+This is a prototype.
+
+Use only fictional patient information.
+
+Do not use real patient names, phone numbers, addresses, medical records, or identifiers.
+
+Add this disclaimer in the UI:
+
+Prototype Notice
+
+AyuLink is a demonstration prototype and is not intended for diagnosis, prescribing, dispensing, or medical decision-making.
+
+For AI safety information:
+
+AI-generated assistive information. Verify with an appropriate clinical source.
+
+⸻
+
+26. PRIVACY
+
+Patient-facing availability APIs must never expose:
+
+* stock quantity
+* supplier
+* pharmacy purchase price
+* sales volume
+* pharmacy margins
+* other private inventory information
+
+Demand analytics must be aggregated.
+
+Do not expose individual patient search histories to pharmacies.
+
+Do not show:
+
+“Patient X searched for Medicine Y.”
+
+Instead show:
+
+“142 searches in the selected area.”
+
+⸻
+
+27. EXTERNAL API RESILIENCE
+
+External APIs are OPTIONAL enhancements.
+
+The application must function using the local database.
+
+Implement:
+
+Local medication database
+↓
+Optional RxNorm enrichment
+↓
+Optional openFDA information
+
+If an external request fails:
+
+* Do not crash
+* Return local data
+* Show a non-blocking warning if necessary
+
+Cache external responses where appropriate.
+
+Do not call external APIs on every keystroke.
+
+Debounce search.
+
+⸻
+
+28. UI/UX REQUIREMENTS
+
+The application must look like a professional healthcare SaaS product.
+
+Style:
+
+* clean
+* modern
+* trustworthy
+* minimal
+* accessible
+* responsive
+
+Use:
+
+* cards
+* tables
+* badges
+* timelines
+* status indicators
+* modal dialogs
+* toast notifications
+* loading states
+* empty states
+* error states
+
+Avoid:
+
+* excessive gradients
+* childish illustrations
+* unnecessary animations
+* fake AI gimmicks
+
+⸻
+
+29. STATUS COLORS
+
+Use clear semantic status indicators.
+
+Available:
+green
+
+Unavailable:
+red
+
+Uncertain:
+amber
+
+Pending:
+blue
+
+Do not rely only on color.
+
+Include text labels/icons for accessibility.
+
+⸻
+
+30. ACCESSIBILITY
+
+Support:
+
+* keyboard navigation
+* visible focus states
+* proper labels
+* semantic buttons
+* readable contrast
+* responsive mobile layout
+* screen-reader-friendly form labels
+
+⸻
+
+31. ERROR HANDLING
+
+Every API call must handle:
+
+* loading
+* success
+* empty
+* error
+
+Show useful messages.
+
+Never leave the user staring at a blank screen.
+
+⸻
+
+32. DEMO MODE
+
+Add a visible development/demo mode if appropriate.
+
+Provide:
+
+Reset Demo Data
+
+This should restore the deterministic demo scenario.
+
+The reset must not delete production data if the project is ever reused.
+
+For this prototype, clearly separate demo seed/reset operations from normal APIs.
+
+⸻
+
+33. TESTING
+
+Before declaring the project complete, run:
+
+Frontend:
+
+* npm install
+* npm run lint
+* npm run build
+
+Backend:
+
+* pip install -r requirements.txt
+* pytest
+
+Also test manually:
+
+1. Doctor login
+2. Create prescription
+3. Send prescription
+4. Pharmacy receives it
+5. Pharmacy marks unavailable
+6. Doctor receives notification
+7. Doctor resolves
+8. Patient searches medicine
+9. Availability appears
+10. Pharmacy updates inventory
+11. Availability changes
+12. Demand dashboard loads
+13. AI history summary works
+14. Safety check works
+15. Logout/login works
+
+Fix errors before moving to the next phase.
+
+⸻
+
+34. IMPORTANT BUILD RULE
+
+Do NOT build all phases in one giant operation.
+
+Work sequentially.
+
+After each phase:
+
+1. Implement
+2. Run tests
+3. Run application
+4. Verify manually
+5. Fix issues
+6. Commit/checkpoint
+7. Only then proceed
+
+If something fails, fix it before continuing.
+
+⸻
+
+35. BUILD PHASES
+
+PHASE 1 — Foundation
+
+Implement:
+
+* project structure
+* frontend
+* backend
+* environment configuration
+* database
+* authentication
+* roles
+* seed data
+
+Verify:
+
+Doctor can login.
+
+Pharmacy can login.
+
+Patient can login.
+
+⸻
+
+PHASE 2 — DOCTOR PRESCRIPTION
+
+Implement:
+
+* doctor dashboard
+* patient list
+* patient history
+* medicine search
+* create prescription
+* prescription items
+* pharmacy selection
+* send prescription
+
+Verify:
+
+Doctor can create a real database-backed prescription.
+
+⸻
+
+PHASE 3 — PHARMACY
+
+Implement:
+
+* pharmacy dashboard
+* prescription inbox
+* prescription detail
+* inventory
+* availability status
+* unavailable action
+
+Verify:
+
+Prescription created by doctor appears in pharmacy account.
+
+⸻
+
+PHASE 4 — DOCTOR ↔ PHARMACY LOOP
+
+Implement:
+
+* unavailable notification
+* doctor notification
+* doctor response
+* prescription status updates
+* realtime/polling
+
+Verify the complete demo workflow.
+
+This is the MOST IMPORTANT phase.
+
+Do not proceed until this works perfectly.
+
+⸻
+
+PHASE 5 — PATIENT MEDICINE AVAILABILITY
+
+Implement:
+
+* medicine search
+* pharmacy availability
+* last updated
+* availability status
+* privacy restrictions
+
+Verify:
+
+Patient searches a medicine and receives pharmacy results.
+
+⸻
+
+PHASE 6 — INVENTORY SYNC
+
+Implement:
+
+* pharmacy inventory management
+* mock POS sync
+* sync timestamp
+* availability update
+* API abstraction for future integrations
+
+Do not attempt real third-party pharmacy POS integration.
+
+⸻
+
+PHASE 7 — DEMAND INTELLIGENCE
+
+Implement:
+
+* anonymous medicine searches
+* prescription counts
+* availability statistics
+* demand score
+* supply-gap detection
+* dashboard charts
+
+Verify all metrics are deterministic and explainable.
+
+⸻
+
+PHASE 8 — AI ASSISTANCE
+
+Implement:
+
+A. Patient history summary
+
+B. Medication safety information
+
+C. Demand intelligence explanation
+
+Do not make the AI responsible for clinical decisions.
+
+If an LLM API key is unavailable, provide a deterministic fallback for the demo.
+
+The demo must still work without an LLM API.
+
+⸻
+
+PHASE 9 — POLISH
+
+Improve:
+
+* UI consistency
+* responsive layout
+* loading states
+* error handling
+* animations only where useful
+* accessibility
+* empty states
+* notifications
+* icons
+* charts
+
+Then test everything.
+
+⸻
+
+36. DEMO ACCOUNTS
+
+Create a clearly documented demo login system.
+
+Doctor:
+
+doctor@ayulink.demo
+
+Pharmacy:
+
+pharmacy@ayulink.demo
+
+Patient:
+
+patient@ayulink.demo
+
+Use a documented demo password.
+
+Never use real credentials.
+
+⸻
+
+37. DEMO RESET
+
+Create:
+
+POST /demo/reset
+
+or an equivalent protected development-only operation.
+
+Reset:
+
+* prescriptions
+* notifications
+* inventory
+* demand metrics
+* searches
+
+to the known demo state.
+
+Do NOT expose this publicly in production mode.
+
+⸻
+
+38. README
+
+README must contain:
+
+1. Product overview
+2. Problem
+3. Solution
+4. Architecture
+5. Technology stack
+6. Database schema
+7. Setup
+8. Environment variables
+9. Running frontend
+10. Running backend
+11. Demo credentials
+12. Demo workflow
+13. API documentation
+14. Safety limitations
+15. Future roadmap
+
+⸻
+
+39. ARCHITECTURE DOCUMENT
+
+Create:
+
+docs/architecture.md
+
+Include:
+
+Frontend
+↓
+FastAPI
+↓
+Supabase/Postgres
+
+and:
+
+Doctor
+↕
+Prescription service
+↕
+Pharmacy
+
+Patient
+→ Availability service
+→ Pharmacy inventory
+
+Prescription/search data
+→ Demand intelligence
+
+Structured prescription data
+→ AI history/safety assistance
+
+⸻
+
+40. FUTURE ROADMAP
+
+Document but DO NOT implement unless time permits:
+
+Phase 2
+
+* Real pharmacy POS integrations
+* FHIR interoperability
+* Verified doctor/pharmacy onboarding
+* Prescription signing
+* Pharmacy reservation
+* location-aware search
+* medicine availability APIs
+* better forecasting
+
+Phase 3
+
+* hospital integration
+* lab integration
+* longitudinal patient record
+* adherence tracking
+* follow-up outcome tracking
+
+Phase 4
+
+* regional demand forecasting
+* supply-chain intelligence
+* pharmacy network optimization
+
+⸻
+
+41. CRITICAL SCOPE CONTROL
+
+If time becomes limited:
+
+REMOVE in this order:
+
+1. Advanced AI
+2. Fancy charts
+3. External APIs
+4. Inventory sync simulation complexity
+5. Patient history extras
+
+NEVER remove:
+
+1. Doctor prescription creation
+2. Pharmacy prescription receiving
+3. Pharmacy unavailable notification
+4. Doctor response
+5. Medicine availability search
+6. Real database persistence
+
+The core workflow must always remain functional.
+
+⸻
+
+42. DO NOT FAKE FUNCTIONALITY
+
+Do not create buttons that do nothing.
+
+Every visible primary action must work.
+
+If a feature is not implemented:
+
+* hide it
+* mark it “Coming Soon”
+* or clearly label it as a prototype simulation
+
+Do not pretend a fake API is a real external integration.
+
+⸻
+
+43. DEMO SCRIPT
+
+The final product must support this exact presentation:
+
+Opening
+
+“Today, most prescriptions still depend on a disconnected handoff between doctor and pharmacy.”
+
+Doctor
+
+Create prescription.
+
+Pharmacy
+
+Receive prescription.
+
+Mark medicine unavailable.
+
+Doctor
+
+Receive alert.
+
+Resolve the issue.
+
+Patient
+
+Search medicine availability.
+
+See participating pharmacies.
+
+Pharmacy
+
+Show inventory dashboard.
+
+Demand Intelligence
+
+Show:
+
+High demand + low availability = potential supply gap.
+
+Closing
+
+“Ayulink doesn’t replace the doctor or pharmacist. It connects them.”
+
+Then:
+
+AI assists. Clinicians decide.
+
+⸻
+
+44. PRODUCT POSITIONING
+
+Do NOT describe AyuLink as:
+
+“AI medicine recommendation app.”
+
+Describe it as:
+
+A structured prescription and doctor-pharmacy coordination platform with assistive AI and medicine availability intelligence.
+
+⸻
+
+45. SUCCESS CRITERIA
+
+The project is complete only when:
+
+* frontend runs
+* backend runs
+* database works
+* authentication works
+* role-based dashboards work
+* doctor creates prescription
+* pharmacy receives prescription
+* pharmacy marks medicine unavailable
+* doctor receives notification
+* doctor resolves request
+* patient searches medicine
+* pharmacy availability is displayed
+* exact inventory quantities remain private
+* pharmacy can update availability
+* demand intelligence works
+* AI history summary works or has deterministic fallback
+* safety information works or has deterministic fallback
+* demo data can be reset
+* README exists
+* tests pass
+* production build succeeds
+
+⸻
+
+46. FINAL INSTRUCTION TO YOU
+
+Start by inspecting the existing repository.
+
+Do NOT overwrite useful existing code without checking it.
+
+If an existing React/FastAPI/Supabase structure exists, reuse it.
+
+If the repository is empty, create the structure specified above.
+
+Do not ask unnecessary questions.
+
+When a reasonable implementation choice is available, make the decision yourself.
+
+Do not pause after generating a plan.
+
+Actually implement the project.
+
+After each phase, run the relevant tests and verify functionality.
+
+At the end of each phase, report:
+
+PHASE:
+STATUS:
+FILES CREATED:
+FILES MODIFIED:
+TESTS:
+RESULT:
+KNOWN ISSUES:
+NEXT PHASE:
+
+If you encounter an error, debug it and continue.
+
+Do not declare success based only on compilation.
+
+Actually run the application and test the critical user flow.
+
+The priority order is:
+
+1. WORKING CORE WORKFLOW
+2. DATABASE CORRECTNESS
+3. USER EXPERIENCE
+4. SAFETY
+5. AI
+6. VISUAL POLISH
+7. FUTURE FEATURES
+
+Build AyuLink now.
