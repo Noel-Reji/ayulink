@@ -241,7 +241,7 @@ export const api = {
       return await request<any[]>(`/patients/${patientId}/prescriptions`);
     } catch {
       const rxs = getLocalState<Prescription[]>('rxs', FALLBACK_PRESCRIPTIONS);
-      return rxs.filter(r => r.patient_id === patientId || r.patient_name.includes("Rahul"));
+      return rxs.filter(r => r.patient_id === patientId || (r.patient_name || '').includes("Rahul"));
     }
   },
 
