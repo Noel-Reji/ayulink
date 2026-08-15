@@ -632,7 +632,7 @@ export const api = {
 
   explainDemand: async (medicineId: string) => {
     try {
-      return await request<any>(`/ai/demand-explanation', {
+      return await request<any>(`/ai/demand-explanation`, {
         method: 'POST',
         body: JSON.stringify({ medicine_id: medicineId }),
       });
