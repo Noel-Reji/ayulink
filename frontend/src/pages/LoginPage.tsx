@@ -15,7 +15,7 @@ interface LoginPageProps {
 }
 
 export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState('doctor@ayulink.demo');
   const [password, setPassword] = useState('demo123');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -67,8 +67,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
   ];
 
   return (
-    <div className="min-h-[90vh] flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
-      <div className="max-w-5xl w-full space-y-8">
+    <div className="min-h-[85vh] flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
+      <div className="max-w-5xl w-full space-y-6 sm:space-y-8">
         {/* Brand Hero */}
         <div className="text-center space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-950/60 border border-teal-500/30 text-teal-300 text-xs font-semibold">
@@ -85,7 +85,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
             </h1>
           </div>
 
-          <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto">
+          <p className="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed">
             Connecting doctors, pharmacies, and patients through one structured digital prescription network.
           </p>
         </div>
@@ -94,12 +94,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
         <div className="space-y-3">
           <div className="flex items-center justify-between px-1">
             <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-              Select Demo Role to Experience:
+              Tap Any Demo Persona to Enter:
             </h2>
-            <span className="text-xs text-teal-400 font-medium">1-Click Instant Access</span>
+            <span className="text-xs text-teal-400 font-semibold">1-Tap Instant Login</span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4">
             {demoRoles.map((dr) => {
               const Icon = dr.icon;
               return (
@@ -108,7 +108,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
                   type="button"
                   onClick={() => handleLogin(dr.email, 'demo123')}
                   disabled={loading}
-                  className={`p-5 rounded-2xl bg-gradient-to-b ${dr.accentColor} bg-slate-900/90 border hover:scale-[1.02] transition-all text-left shadow-xl flex flex-col justify-between space-y-4 group cursor-pointer`}
+                  className={`p-5 rounded-2xl bg-gradient-to-b ${dr.accentColor} bg-slate-900/90 border hover:scale-[1.02] active:scale-[0.99] transition-all text-left shadow-xl flex flex-col justify-between space-y-4 group cursor-pointer`}
                 >
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
@@ -133,7 +133,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
                   </div>
 
                   <div className="pt-2 border-t border-slate-800/60 flex items-center justify-between text-xs font-bold text-teal-400 group-hover:translate-x-1 transition-transform">
-                    <span>Enter {dr.name.split(' ')[0]} Portal</span>
+                    <span>Enter as {dr.name.split(' ')[0]}</span>
                     <ArrowRight className="w-4 h-4" />
                   </div>
                 </button>
@@ -143,10 +143,38 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
         </div>
 
         {/* Custom Login Drawer */}
-        <div className="bg-slate-900/80 p-6 rounded-2xl border border-slate-800 max-w-md mx-auto space-y-4 shadow-xl">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 text-center">
-            Or Sign In with Demo Email
-          </h3>
+        <div className="bg-slate-900/80 p-5 sm:p-6 rounded-2xl border border-slate-800 max-w-md mx-auto space-y-4 shadow-xl">
+          <div className="text-center space-y-1">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              Or Sign In with Demo Credentials
+            </h3>
+            <p className="text-[11px] text-slate-400">Password for all demo accounts is <span className="font-mono text-teal-300 font-bold">demo123</span></p>
+          </div>
+
+          {/* Quick Pre-fill Pills */}
+          <div className="flex items-center justify-center gap-1.5 flex-wrap">
+            <button
+              type="button"
+              onClick={() => { setEmail('doctor@ayulink.demo'); setPassword('demo123'); }}
+              className="px-2.5 py-1 text-[11px] rounded-lg bg-slate-800 hover:bg-slate-700 text-teal-300 border border-slate-700 cursor-pointer"
+            >
+              Doctor
+            </button>
+            <button
+              type="button"
+              onClick={() => { setEmail('pharmacy@ayulink.demo'); setPassword('demo123'); }}
+              className="px-2.5 py-1 text-[11px] rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 cursor-pointer"
+            >
+              Pharmacy
+            </button>
+            <button
+              type="button"
+              onClick={() => { setEmail('patient@ayulink.demo'); setPassword('demo123'); }}
+              className="px-2.5 py-1 text-[11px] rounded-lg bg-slate-800 hover:bg-slate-700 text-blue-300 border border-slate-700 cursor-pointer"
+            >
+              Patient
+            </button>
+          </div>
 
           {error && (
             <div className="p-3 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
@@ -191,7 +219,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
               disabled={loading}
               className="w-full py-2.5 rounded-xl font-bold text-xs bg-teal-500 hover:bg-teal-400 text-slate-950 transition-colors shadow-lg shadow-teal-500/20 cursor-pointer disabled:opacity-50"
             >
-              {loading ? 'Authenticating...' : 'Sign In'}
+              {loading ? 'Entering Portal...' : 'Sign In'}
             </button>
           </form>
         </div>
